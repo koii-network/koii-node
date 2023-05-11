@@ -1,3 +1,5 @@
+# Welcome to the Koii Network!
+
 ![Koii Network Desktop Node](https://docs.koii.network/assets/images/Run%20a%20Task%20Node-ac181548683cbd87b2c8654efd0fcc2d.svg)
 
 <div align="center">
@@ -8,12 +10,10 @@
 ![Stars](https://img.shields.io/github/stars/koii-network/desktop-node?style=social)
 ![GitHub watchers](https://img.shields.io/github/watchers/koii-network/desktop-node?style=social)
 [![Twitter](https://img.shields.io/twitter/follow/KoiiNetwork)](https://twitter.com/KoiiNetwork)
+
+ 🐛 Make sure to submit issues [here](https://github.com/koii-network/desktop-node/issues)
   
 </div>
-
-🐛 Make sure to submit issues [here](https://github.com/koii-network/desktop-node/issues)
-
-# Welcome to the Koii Network!
 
 Koii is a community of people and computers, working together to build a brighter, more secure, more private future. The global network allows anyone to use a few lines of code to access personal computers instead of paying Big Tech™ to do what you need.
 
