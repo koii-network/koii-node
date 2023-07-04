@@ -9,5 +9,5 @@ contact_links:
       about: |
         If you've encountered a Twitter Crawler Task problem, or something else that might be related to Twitter Crawler Task, please open an issue in the Arweave Task repo instead.
     - name: 🤔 Questions and Help
-      url: https://reactnative.dev/help
-      about: Looking for help with your app? Please refer to the React Native community's support resources.
+      url: https://docs.koii.network/run-a-node/task-nodes/how-to-run-a-desktop-node
+      about: Looking for help with the desktop node? Please refer to our docs for more information.
