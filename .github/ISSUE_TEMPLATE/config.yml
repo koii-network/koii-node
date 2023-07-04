@@ -1,0 +1,13 @@
+blank_issues_enabled: true
+contact_links:
+    - name: 📦 Arweave Task Issue
+      url: https://github.com/koii-network/Arweave-Health-Check/issues/new/choose
+      about: |
+        If you've encountered a Arweave Task problem, or something else that might be related to Arweawve Task, please open an issue in the Arweave Task repo instead.
+    - name: 📦 Twitter Task Issue
+      url: https://github.com/GET-Store-CAT/twitter-crawler/issues/new/choose
+      about: |
+        If you've encountered a Twitter Crawler Task problem, or something else that might be related to Twitter Crawler Task, please open an issue in the Arweave Task repo instead.
+    - name: 🤔 Questions and Help
+      url: https://reactnative.dev/help
+      about: Looking for help with your app? Please refer to the React Native community's support resources.
