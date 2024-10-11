@@ -1,6 +1,6 @@
 # Welcome to the Koii Network!
 
-![Koii Network Desktop Node](https://docs.koii.network/assets/images/Run%20a%20Task%20Node-ac181548683cbd87b2c8654efd0fcc2d.svg)
+![Koii Network Desktop Node](./.github/assets/images/run-task-node.svg)
 
 <div align="center">
   
