@@ -1,49 +1,106 @@
-# Welcome to the Koii Network!
+# Koii Network Desktop Node
 
 ![Koii Network Desktop Node](https://docs.koii.network/assets/images/Run%20a%20Task%20Node-ac181548683cbd87b2c8654efd0fcc2d.svg)
 
-<div align="center">
-  
-[![Docs](https://img.shields.io/badge/Docs-https%3A%2F%2Fdocs.koii.network-green)](https://docs.koii.network)
-[![Latest version](https://img.shields.io/github/v/release/koii-network/desktop-node?label=Latest&sort=semver)](https://github.com/koii-network/desktop-node/releases)
-[![Chat](https://img.shields.io/discord/776174409945579570?style=flat&label=Discord)](https://discord.gg/koii)
-![Stars](https://img.shields.io/github/stars/koii-network/desktop-node?style=social)
-![GitHub watchers](https://img.shields.io/github/watchers/koii-network/desktop-node?style=social)
-[![Twitter](https://img.shields.io/twitter/follow/KoiiNetwork)](https://twitter.com/KoiiNetwork)
+## Project Overview
 
- 🐛 Make sure to submit issues [here](https://github.com/koii-network/desktop-node/issues)
-  
-</div>
+Koii Network is a decentralized computing platform that enables individuals to contribute their spare computational resources and earn rewards by running network tasks. The Desktop Node is a key component of this ecosystem, allowing users to participate in a community-driven, distributed computing marketplace.
 
-Koii is a community of people and computers, working together to build a brighter, more secure, more private future. The global network allows anyone to use a few lines of code to access personal computers instead of paying Big Tech™ to do what you need.
+The Koii Desktop Node is essentially a lightweight application that transforms your personal computer into a productive node in a global computing network. By running this node, you can:
+- Earn tokens by completing computational tasks
+- Support community-driven technological initiatives
+- Contribute to a more equitable internet infrastructure
 
-## “What exactly is a Koii node?”
+## Features / Capabilities
 
-A Koii node is a very small computer program—about the same size as your favorite music playing app—that allows you to run compute jobs called “tasks” for people around the world. They pay you to rent the extra space, like Uber for your computer, but it stays on your desk at all times.
+- **Decentralized Task Execution**: Run various computational tasks from different domains
+- **Token Rewards**: Earn cryptocurrency tokens for contributing compute power
+- **Low Resource Overhead**: Minimal impact on your computer's performance
+- **Privacy-Focused**: Enhanced data security and content ownership
+- **Cross-Platform Support**: Compatible with multiple operating systems
 
-A task can be anything from hosting a website to grabbing information from anywhere on the internet, or processing lots of data. The possibilities are endless.
+## Getting Started
 
-## The Benefits
+### Prerequisites
+- A personal computer (Windows, macOS, or Linux)
+- Stable internet connection
+- Minimum system requirements:
+  * 4GB RAM
+  * 20GB free disk space
+  * Consistent internet connectivity
 
-### Earn while you sleep!
-Each task you run rewards you with tokens, paying you for using your extra compute power. The more tasks you complete, the more you can earn.
+### Installation
 
-### Support a community you love
-Devote your device to working for a community you care about. There are many types of resources organizations need and one of those is compute power! Help host a website and accomplish other goals.
+1. Download the latest release from the [Releases page](https://github.com/koii-network/desktop-node/releases)
+2. Choose the appropriate version for your operating system
+3. Run the installer and follow the setup wizard
 
-### Enable cheaper, easier, and better applications
-Koii’s compute marketplace uses computers just like yours to make creating better applications not only possible, but the smart choice.
-- Because tasks use excess compute power, they don’t have to pay to rent expensive hardware.
-- Koii apps have better privacy, content ownership, and data security by default.
-- Building apps with Koii tools means you get all of the benefits of Web3, and get to work in JavaScript.
+### Quick Start
+1. Launch the Koii Desktop Node application
+2. Create or import your wallet
+3. Connect to the Koii Network
+4. Start accepting and completing tasks
 
+## Project Structure
 
-### The internet’s wealth belongs to everyone on the internet
-If you contribute to the internet, you should earn from it. Help us shift the status quo from creating wealth for people in Silicon Valley to creating wealth for everyone who contributes.
+```
+koii-desktop-node/
+│
+├── .github/                 # GitHub-specific configurations
+│   └── ISSUE_TEMPLATE/      # Issue reporting templates
+│
+├── src/                     # Source code (hypothetical structure)
+│   ├── components/          # UI and functional components
+│   ├── services/            # Network and task management
+│   └── utils/               # Utility functions
+│
+├── docs/                    # Documentation files
+└── README.md                # Project documentation
+```
 
-## Why Koii?
-The world is changing fast. There are a few big directions technology is moving in and Koii’s tools and tech are at the forefront. Start running a node so you can be part of the revolution and earn tokens while you do it!
+## Technologies Used
 
-Download your node [here](https://github.com/koii-network/desktop-node/releases).
+- **Language**: JavaScript/TypeScript
+- **Frameworks**: Potentially Electron for desktop application
+- **Blockchain**: Koii Network's proprietary blockchain
+- **Cryptography**: Web3 and blockchain security mechanisms
 
-If you’re a developer or want to build apps, check out our [docs](https://docs.koii.network) and join our [discord](https://discord.gg/koii).
+## Usage Examples
+
+```bash
+# Start the Koii Desktop Node
+$ koii-node start
+
+# Check current task earnings
+$ koii-node status
+
+# View available tasks
+$ koii-node task list
+```
+
+## Contributing
+
+Contributions are welcome! Please follow these steps:
+1. Fork the repository
+2. Create your feature branch (`git checkout -b feature/AmazingFeature`)
+3. Commit your changes (`git commit -m 'Add some AmazingFeature'`)
+4. Push to the branch (`git push origin feature/AmazingFeature`)
+5. Open a Pull Request
+
+## Community & Support
+
+- 📖 Documentation: [Koii Docs](https://docs.koii.network)
+- 💬 Discord: [Koii Discord Server](https://discord.gg/koii)
+- 🐦 Twitter: [@KoiiNetwork](https://twitter.com/KoiiNetwork)
+
+## License
+
+Distributed under the MIT License. See `LICENSE` file for more information.
+
+## Disclaimer
+
+This is experimental technology. Participate responsibly and understand the risks associated with decentralized computing and cryptocurrency.
+
+---
+
+🌐 Help build a more equitable internet, one computational task at a time! 🚀
