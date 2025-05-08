@@ -1,0 +1,1 @@
+export { getAppDataPath } from './getAppDataPath';

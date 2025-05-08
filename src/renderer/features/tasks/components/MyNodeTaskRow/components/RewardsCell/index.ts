@@ -1,0 +1,1 @@
+export { RewardsCell } from './RewardsCell';

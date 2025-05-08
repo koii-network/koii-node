@@ -1,0 +1,1 @@
+export { ExportSecretPhrase } from './ExportSecretPhrase';

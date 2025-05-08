@@ -1,0 +1,28 @@
+{
+  "name": "desktop-node",
+  "version": "1.3.1",
+  "description": "Desktop GUI and runtime for earning Koii tokens by running Koii Tasks",
+  "license": "MIT",
+  "author": {
+    "name": "Koii Network",
+    "email": "support@koii.network",
+    "url": "https://koii.network"
+  },
+  "main": "./dist/main/main.js",
+  "scripts": {
+    "rebuild": "node -r ts-node/register ../../.erb/scripts/electron-rebuild.js",
+    "postinstall": "npm run rebuild && npm run link-modules",
+    "link-modules": "node -r ts-node/register ../../.erb/scripts/link-modules.ts"
+  },
+  "dependencies": {
+    "@_koii/sdk": "^2.4.20",
+    "@_koii/web3.js": "^0.1.11",
+    "@koii-network/task-node": "^1.12.36",
+    "@solana/buffer-layout": "^4.0.1",
+    "@solana/spl-token": "^0.2.0",
+    "mqtt": "^5.10.1",
+    "puppeteer": "^24.5.0",
+    "puppeteer-chromium-resolver": "^24.0.1",
+    "puppeteer-real-browser": "^1.4.2"
+  }
+}

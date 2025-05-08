@@ -1,0 +1,1 @@
+export { NotificationsSettings } from './NotificationsSettings';

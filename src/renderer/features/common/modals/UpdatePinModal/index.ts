@@ -1,0 +1,1 @@
+export { UpdatePinModal } from './UpdatePinModal';

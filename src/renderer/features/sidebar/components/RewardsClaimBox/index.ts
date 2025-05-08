@@ -1,0 +1,1 @@
+export { RewardsClaimBox } from './RewardsClaimBox';

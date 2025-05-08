@@ -1,0 +1,1 @@
+export { KoiiInputNew } from './KoiiInput';

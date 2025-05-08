@@ -1,0 +1,1 @@
+export { SeedPhraseConfirm } from './SeedPhraseConfirm';

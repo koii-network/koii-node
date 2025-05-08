@@ -1,0 +1,1 @@
+export { WalletAddressInput } from './WalletAddressInput';

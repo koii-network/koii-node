@@ -1,0 +1,1 @@
+export { verifyMessage } from './verifyMessage';

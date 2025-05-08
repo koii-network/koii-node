@@ -1,0 +1,1 @@
+export { AutomateSettings } from './AutomateSettings';

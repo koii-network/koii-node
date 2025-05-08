@@ -1,0 +1,15 @@
+export enum SystemDbKeys {
+  ActiveAccount = 'ACTIVE_ACCOUNT',
+  RunningTasks = 'runningTasks',
+  EncryptedSecretPhraseMap = 'ENCRYPTED_SEED_PHRASE_MAP',
+  UserConfig = 'USER_CONFIG',
+  AllTimeRewards = 'ALL_TIME_REWARDS',
+  TaskRetryData = 'TASK_RETRY_DATA',
+  Schedules = 'SCHEDULES',
+  SchedulerTasks = 'SCHEDULER_TASKS',
+  MainnetMigrationTasksToMigrate = 'MAINNET_MIGRATION_TASKS_TO_MIGRATE',
+  Notifications = 'NOTIFICATIONS',
+  TaskIdToAuditProgramIdMap = 'TASK_ID_TO_AUDIT_PROGRAM_ID_MAP',
+  RPCStatusInformation = 'RPC_STATUS_INFO',
+  InitializedStakingAccounts = 'INITIALIZED_STAKING_ACCOUNTS',
+}

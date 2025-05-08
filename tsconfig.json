@@ -1,0 +1,27 @@
+{
+  "compilerOptions": {
+    "incremental": true,
+    "module": "commonjs",
+    "lib": ["dom", "es2021"],
+    "strict": true,
+    "sourceMap": true,
+    "moduleResolution": "node",
+    "esModuleInterop": true,
+    "allowSyntheticDefaultImports": true,
+    "resolveJsonModule": true,
+    "allowJs": true,
+    "outDir": ".erb/dll",
+    "baseUrl": "./src",
+    "skipLibCheck": true,
+    "noImplicitAny": true,
+    "jsx": "react",
+    "target": "ES6"
+  },
+  "exclude": [
+    "test",
+    "release/build",
+    "release/app/dist",
+    ".erb/dll",
+    ".erb/configs"
+  ]
+}
