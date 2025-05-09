@@ -1,18 +1,8 @@
-# Koii UI for Node
+# Koii Node
 
 ## Description
 
-This repo contains the desktop application as the UI for the [Koii Node](https://github.com/koii-network/node). It provides a user-friendly interface for interacting with the Koii Network.
-
-The project structure is based on [Electron React Boilerplate](https://electron-react-boilerplate.js.org)
-
-## Features
-
-- Desktop application for Koii Node management
-- Task management and monitoring
-- Network status and statistics
-- Secure wallet integration
-- Task extension support (including Orca)
+This repo contains a desktop application as the UI for the [Koii Node](https://github.com/koii-network/node). It provides a user-friendly interface for running tasks, managing your wallet and interacting with the Koii Network.
 
 ## Prerequisites
 
@@ -24,8 +14,8 @@ The project structure is based on [Electron React Boilerplate](https://electron-
 
 1. Clone the repository:
 ```sh
-git clone https://github.com/koii-network/desktop-node
-cd desktop-node
+git clone https://github.com/koii-network/koii-node
+cd koii-node
 ```
 
 2. Install dependencies:
