@@ -1,0 +1,338 @@
+variables:
+  USE_HARD_LINKS: 'false'
+  FF_USE_FASTZIP: 'true'
+  TRANSFER_METER_FREQUENCY: 2s
+  ARTIFACT_COMPRESSION_LEVEL: 'fastest'
+  CACHE_COMPRESSION_LEVEL: 'fastest'
+  DOCKER_DRIVER: overlay2
+
+# Windows runners
+.rbst-windows-runner:
+  tags:
+    - rbst-windows-runner
+
+stages:
+  - prepare
+  - checks
+  - package
+  - mirror
+
+##################################################################################################
+######################################## TEMPLATES ################################################
+###################################################################################################
+
+.npm_ci_template: &npm_ci
+  stage: prepare
+  interruptible: true
+  rules:
+    - if: '$CI_COMMIT_TAG'
+      when: always
+    - if: '$CI_MERGE_REQUEST_ID'
+      when: always
+    - if: '$CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH'
+      when: always
+    - if: '$CI_COMMIT_BRANCH != $CI_DEFAULT_BRANCH'
+      when: always
+  script:
+    - npm config set -- //gitlab.com/api/v4/packages/npm/:_authToken=$GITLAB_ACCESS_TOKEN
+    - npm config set @koii-network:registry https://gitlab.com/api/v4/packages/npm/
+
+    # Configure GitHub Package Registry
+    - npm config set -- //npm.pkg.github.com/:_authToken=$GITHUB_TOKEN
+    - npm config set "@orca-compute:registry" "https://npm.pkg.github.com/"
+
+    - npm config set -- //registry.npmjs.org/:_authToken=$ORCA_NPM_TOKEN
+    - npm config set "@orcacompute:registry" "https://registry.npmjs.org/"
+
+    - npm ci --cache npm_cache --prefer-offline --no-audit --progress=false
+  cache:
+    - key: npm-${CI_COMMIT_REF_SLUG}-12-protected
+      policy: push
+      paths:
+        - npm_cache/
+    - key: node_modules-${CI_COMMIT_REF_SLUG}-12-protected
+      policy: push
+      paths:
+        - node_modules/
+        - release/app/node_modules/
+        - src/node_modules/
+
+.lint_template: &lint
+  stage: checks
+  interruptible: true
+  rules:
+    - if: '$CI_COMMIT_TAG'
+      when: never
+    - if: '$CI_MERGE_REQUEST_ID'
+      when: always
+    - if: '$CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH'
+      when: always
+    - if: '$CI_COMMIT_BRANCH != $CI_DEFAULT_BRANCH'
+      when: always
+  script:
+    # Ensure cross-env is available locally even if cache fails
+    - npm run lint
+  cache:
+    - key: npm-${CI_COMMIT_REF_SLUG}-12-protected
+      policy: pull
+      paths:
+        - npm_cache/
+    - key: node_modules-${CI_COMMIT_REF_SLUG}-12-protected
+      policy: pull
+      paths:
+        - node_modules/
+        - release/app/node_modules/
+        - src/node_modules/
+
+.test_template: &test
+  stage: checks
+  interruptible: true
+  rules:
+    - if: '$CI_COMMIT_TAG'
+      when: never
+    - if: '$CI_MERGE_REQUEST_ID'
+      when: always
+    - if: '$CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH'
+      when: always
+    - if: '$CI_COMMIT_BRANCH != $CI_DEFAULT_BRANCH'
+      when: always
+  script:
+    - npm run test
+  cache:
+    - key: npm-${CI_COMMIT_REF_SLUG}-12-protected
+      policy: pull
+      paths:
+        - npm_cache/
+    - key: node_modules-${CI_COMMIT_REF_SLUG}-12-protected
+      policy: pull
+      paths:
+        - node_modules/
+        - release/app/node_modules/
+        - src/node_modules/
+
+.package_template: &package
+  interruptible: false
+  rules:
+    - if: '$CI_COMMIT_BRANCH =~ /^RELEASE_/'
+      when: manual
+  stage: package
+  cache:
+    - key: npm-${CI_COMMIT_REF_SLUG}-12-protected
+      policy: pull
+      paths:
+        - npm_cache/
+    - key: node_modules-${CI_COMMIT_REF_SLUG}-12-protected
+      policy: pull
+      paths:
+        - node_modules/
+        - release/app/node_modules/
+        - src/node_modules/
+  variables:
+    AWS_ACCESS_KEY_ID: ${AWS_ACCESS_KEY_ID}
+    AWS_SECRET_ACCESS_KEY: ${AWS_SECRET_ACCESS_KEY}
+    APTABASE_INT: ${APTABASE_INT}
+    VIP_SECRET_KEY: ${VIP_SECRET_KEY}
+    TEST_VAR: ${TEST_VAR}
+
+###################################################################################################
+######################################## PREPARE ##################################################
+###################################################################################################
+
+install_win:
+  extends:
+    - .rbst-windows-runner
+  <<: *npm_ci
+
+install_linux:
+  image: $LINUX_IMAGE
+  <<: *npm_ci
+  tags:
+    - rbst-ubuntu-runner
+
+install_macos:
+  <<: *npm_ci
+  before_script:
+    - export PATH="/opt/homebrew/opt/node@18/bin:$PATH" || export PATH="/usr/local/opt/node@18/bin:$PATH"
+    - node --version  # Verify we're using Node.js 18
+  tags:
+    - rbst-mac-runner
+
+# install_macos_intel:
+#   <<: *npm_ci
+#   tags:
+#     - koii-macos-intel
+
+###################################################################################################
+######################################## TEST #####################################################
+###################################################################################################
+
+lint_win:
+  extends:
+    - .rbst-windows-runner
+  needs: ['install_win']
+  dependencies:
+    - install_win
+  stage: checks
+  script:
+    - npm ci  # Install dependencies again in this job
+    - npm run lint
+
+lint_linux:
+  image: $LINUX_IMAGE
+  needs: ['install_linux']
+  dependencies:
+    - install_linux
+  <<: *lint
+  tags:
+    - rbst-ubuntu-runner
+
+lint_macos:
+  image: $MACOS_IMAGE
+  needs: ['install_macos']
+  dependencies:
+    - install_macos
+  before_script:
+    - export PATH="/opt/homebrew/opt/node@18/bin:$PATH" || export PATH="/usr/local/opt/node@18/bin:$PATH"
+    - node --version  # Verify we're using Node.js 18
+  <<: *lint
+  tags:
+    - rbst-mac-runner
+
+test_win:
+  extends:
+    - .rbst-windows-runner
+  stage: checks
+  needs: ['install_win', 'lint_win']
+  dependencies:
+    - install_win
+    - lint_win
+  script:
+    - npm ci  # Reinstall dependencies
+    - npm run test
+  cache:
+    - key: node_modules-${CI_COMMIT_REF_SLUG}-12-protected
+      policy: pull
+      paths:
+        - node_modules/
+        - release/app/node_modules/
+        - src/node_modules/
+
+test_linux:
+  image: $LINUX_IMAGE
+  needs: ['install_linux', 'lint_linux']
+  dependencies:
+    - install_linux
+    - lint_linux
+  <<: *test
+  tags:
+    - rbst-ubuntu-runner
+
+test_macos:
+  needs: ['install_macos', 'lint_macos']
+  dependencies:
+    - install_macos
+    - lint_macos
+  before_script:
+    - export PATH="/opt/homebrew/opt/node@18/bin:$PATH" || export PATH="/usr/local/opt/node@18/bin:$PATH"
+    - node --version  # Verify we're using Node.js 18
+    - chmod +x node_modules/.bin/*
+  <<: *test
+  tags:
+    - rbst-mac-runner
+
+###################################################################################################
+######################################## PACKAGE ##################################################
+###################################################################################################
+
+package_win:
+  extends:
+    - .rbst-windows-runner
+  <<: *package
+  needs: ['lint_win', 'test_win']
+  script:
+    - npm ci  # Reinstall dependencies to ensure everything is available
+    - npm run release -- -w
+
+package_linux:
+  image: $LINUX_IMAGE
+  <<: *package
+  needs: ['lint_linux', 'test_linux']
+  script:
+    - npm ci  # Reinstall dependencies to ensure everything is available
+    - npm run release
+  tags:
+    - rbst-ubuntu-runner
+
+package_macos:
+  <<: *package
+  needs: ['lint_macos', 'test_macos']
+  before_script:
+    - chmod +x node_modules/.bin/*
+  script:
+    - npm ci
+    - export NODE_OPTIONS="--max-old-space-size=6144"
+    - npm run release
+  tags:
+    - rbst-mac-runner
+
+###################################################################################################
+######################################## MIRROR ##################################################
+###################################################################################################
+
+mirror_to_github:
+  stage: mirror
+  image: $LINUX_IMAGE
+  needs:
+    - install_win
+    - install_linux
+    - install_macos
+    - lint_win
+    - lint_linux
+    - lint_macos
+    - test_win
+    - test_linux
+    - test_macos
+  rules:
+    - if: '$CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH'
+      when: always
+    - when: never
+  variables:
+    GIT_STRATEGY: none
+  script:
+    # Start fresh
+    - cd ~
+    - rm -rf temp-mirror-repo
+    - mkdir temp-mirror-repo && cd temp-mirror-repo
+    # Clone the Gitlab repository
+    - git clone --single-branch --branch="$CI_DEFAULT_BRANCH" --depth=1 "https://oauth2:${GITLAB_MIRRORING_ACCESS_TOKEN}@gitlab.com/koii-network/dev-green/desktop-node.git" original
+    - cd original
+    - git lfs fetch --all
+    - COMMIT_MSG=$(git log -1 --pretty=%B)
+    - COMMIT_AUTHOR=$(git log -1 --pretty="%an <%ae>")
+    - COMMIT_DATE=$(git log -1 --pretty=%ad)
+    # Create new repo
+    - cd ..
+    - git init temp-repo
+    - cd temp-repo
+    - git lfs install
+    # Copy content
+    - cp -r ../original/. .
+    - rm -rf ../original
+    # Commit with simple metadata
+    - git add .
+    - git config user.name "$(echo $COMMIT_AUTHOR | cut -d '<' -f1)"
+    - git config user.email "$(echo $COMMIT_AUTHOR | cut -d '<' -f2 | tr -d '>')"
+    - GIT_COMMITTER_DATE="$COMMIT_DATE" git commit --date="$COMMIT_DATE" -m "$COMMIT_MSG"
+    # Create and switch to main branch
+    - git branch -M $CI_DEFAULT_BRANCH
+    # Configure git pull strategy
+    - git config pull.rebase false
+    # Add GitHub remote and fetch
+    - git remote add github https://${GITHUB_MIRRORING_USERNAME}:${GITHUB_MIRRORING_TOKEN}@github.com/${GITHUB_MIRRORING_REPO_PATH}.git
+    - git fetch github $CI_DEFAULT_BRANCH
+    # Merge preserving GitLab files
+    - git merge --strategy=ours github/$CI_DEFAULT_BRANCH -m "Merge branch 'github/$CI_DEFAULT_BRANCH'"
+    # Push to GitHub
+    - git push github $CI_DEFAULT_BRANCH
+  tags:
+    - rbst-ubuntu-runner
